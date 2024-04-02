@@ -3,32 +3,26 @@ import cv2
 import numpy as np
 import math
 
-img = cv2.imread('Lena.png')  # 读图
+img = cv2.imread('Lena.png')  # Read image data.
 ########## Begin ##########
 
-# 1.利用高斯滤波平滑图像
+# 1.Using Gaussian function to smooth image.
+# 1.1.Create a two-dimensional Gaussian distribution matrix.
 sigma1 = sigma2 = 1
-GUASum = 0
-# 生成二维高斯分布矩阵
-gaussian = np.zeros([5, 5])
-for i in range(5):
-    for j in range(5):
-        gaussian[i, j] = math.exp(-1/2 * (np.square(i-3)/np.square(sigma1) + (np.square(j-3)/np.square(sigma2)))) / \
+gau_sum = 0
+gua_win = 5
+gua_half_win = 3
+gaussian = np.zeros([gua_win, gua_win])
+for i in range(gua_win):
+    for j in range(gua_win):
+        gaussian[i, j] = math.exp(-1/2 * (np.square(i-gua_half_win)/np.square(sigma1) + (np.square(j-gua_half_win)/np.square(sigma2)))) / \
                          (2*math.pi*sigma1*sigma2)
-        GUASum = GUASum + gaussian[i, j]
+        gau_sum = gau_sum + gaussian[i, j]
 
+# 1.2.Product image and Gaussian matrix.
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+W, H = gray.shape
 
-
-
-
-for i in range(5):
-    for j in range(5):
-        gaussian[i,j] = math.exp(-1/2 * (np.square(i-3)/np.square(sigma1)           #生成二维高斯分布矩阵
-                        + (np.square(j-3)/np.square(sigma2)))) / (2*math.pi*sigma1*sigma2)
-        sum = sum + gaussian[i, j]
-
-gaussian = gaussian/sum
-print(gaussian)
 
 def rgb2gray(rgb):
     return np.dot(rgb[...,:3], [0.299, 0.587, 0.114])
@@ -123,7 +117,7 @@ for i in range(1, W3-1):
               or (NMS[i, [j-1, j+1]] < TH).any()):
             DT[i, j] = 1
 plt.imshow(DT,cmap="gray")
-# img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 #
 # blur = cv2.GaussianBlur(img, (5, 5), 0)  # 用高斯滤波处理原图像降噪
 # canny = cv2.Canny(blur, 50, 150)  # 50是最小阈值,150是最大阈值
