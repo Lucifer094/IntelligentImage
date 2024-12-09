@@ -97,6 +97,8 @@ for i in range(gua_half_win, W-gua_half_win):
 # 4. Hysteresis threshold processing.
 TL = 0.05 * np.max(NMS)
 TH = 0.7 * np.max(NMS)
+# TL = 50
+# TH = 150
 DTT = 0 * NMS
 for i in range(gua_half_win, W-gua_half_win):
     for j in range(gua_half_win, H-gua_half_win):
